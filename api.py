@@ -86,7 +86,7 @@ def send_text_msg(robwxid, to_wxid, msg):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -112,8 +112,11 @@ def send_group_at_msg(robwxid, to_wxid, at_wxid, at_name, msg):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
+
+
+# send_group_at_msg('wxid_1v0pgyuoxup22','24081364210@chatroom','ivwind','Feng??','加油')
 
 
 def send_image_msg(robwxid, to_wxid, path):
@@ -134,7 +137,7 @@ def send_image_msg(robwxid, to_wxid, path):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -156,7 +159,7 @@ def send_video_msg(robwxid, to_wxid, path):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -178,7 +181,7 @@ def send_file_msg(robwxid, to_wxid, path):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -200,7 +203,7 @@ def send_emoji_msg(robwxid, to_wxid, path):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -232,7 +235,7 @@ def send_link_msg(robwxid, to_wxid, title, text, target_url, pic_url):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -254,7 +257,7 @@ def send_music_msg(robwxid, to_wxid, name):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -272,7 +275,7 @@ def get_robot_name(robwxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -290,7 +293,7 @@ def get_robot_headimgurl(robwxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -307,7 +310,7 @@ def get_logged_account_list():
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -330,8 +333,12 @@ def get_friend_list(robwxid='', is_refresh=0):
         ret_json = json.loads(ret_data)  # 格式化提取数据
         ret_list = requests.utils.unquote(ret_json["data"])  # 对获取的数据进行解码
         return json.loads(ret_list)  # 对解码后的数据返回list
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
+
+
+# friend_list = get_friend_list()
+# print(friend_list)
 
 
 def get_group_list(robwxid='', is_refresh=0):
@@ -349,9 +356,17 @@ def get_group_list(robwxid='', is_refresh=0):
     data['is_refresh'] = is_refresh  # 是否刷新列表，0 从缓存获取 / 1 刷新并获取
     result = json.dumps(data)
     try:
-        return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+        # return requests.post(API_URL, data={"data": result})
+        ret_data = requests.post(API_URL, data=result).text  # 获取数据
+        ret_json = json.loads(ret_data)  # 格式化提取数据
+        ret_list = requests.utils.unquote(ret_json["data"])  # 对获取的数据进行解码
+        return json.loads(ret_list)  # 对解码后的数据返回list
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
+
+
+# group_list = get_group_list()
+# print(group_list)
 
 
 def get_group_member_list(robwxid, group_wxid, is_refresh=0):
@@ -375,8 +390,11 @@ def get_group_member_list(robwxid, group_wxid, is_refresh=0):
         ret_json = json.loads(ret_data)  # 格式化提取数据
         ret_list = requests.utils.unquote(ret_json["data"])  # 对获取的数据进行解码
         return json.loads(ret_list)  # 对解码后的数据返回list
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
+
+# group_member_list = get_group_member_list('wxid_1v0pgyuoxup22','24081364210@chatroom')
+# print(group_member_list)
 
 
 def get_group_member(robwxid, group_wxid, member_wxid):
@@ -394,11 +412,11 @@ def get_group_member(robwxid, group_wxid, member_wxid):
     data['robot_wxid'] = robwxid  # 账户id，取哪个账号的资料
     data['group_wxid'] = group_wxid  # 群id
     data['member_wxid'] = member_wxid  # 群成员id
-    result = json.dumps(data)
+    # result = json.dumps(data)
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -420,7 +438,7 @@ def accept_transfer(robwxid, friend_wxid, json_string):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -440,7 +458,7 @@ def agree_group_invite(robwxid, json_string):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -460,7 +478,7 @@ def agree_friend_verify(robwxid, json_string):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -482,7 +500,7 @@ def modify_friend_note(robwxid, friend_wxid, note):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -502,7 +520,7 @@ def delete_friend(robwxid, friend_wxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -524,7 +542,7 @@ def remove_group_member(robwxid, group_wxid, member_wxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -546,7 +564,7 @@ def modify_group_name(robwxid, group_wxid, group_name):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -568,7 +586,7 @@ def modify_group_notice(robwxid, group_wxid, notice):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -588,7 +606,7 @@ def building_group(robwxid, friends):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -608,7 +626,7 @@ def quit_group(robwxid, group_wxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
@@ -630,10 +648,11 @@ def invite_in_group(robwxid, group_wxid, friend_wxid):
     result = json.dumps(data)
     try:
         return requests.post(API_URL, data={"data": result})
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         raise ConnectionError(f"请检查当前的回复地址是否正确！ {API_URL}")
 
 
+# noinspection PyPep8Naming
 def sendSGHttp(url, params, method='get', timeout=3):
     """
      * 执行一个 HTTP 请求，仅仅是post组件，其他语言请自行替换即可

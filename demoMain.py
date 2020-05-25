@@ -43,7 +43,7 @@ def index():
         if wx_type == "100":
             send_text_msg(robot_wxid, to_wxid, "Hello")
         elif wx_type == "200":  # 群聊消息
-            send_group_at_msg(robot_wxid, to_wxid, final_from_wxid, final_nickname, "Hello！请加我私聊")
+            send_group_at_msg(robot_wxid, to_wxid, final_from_wxid, final_nickname, "Hello！请加我私聊,复读机之二")
         else:
             pass
     else:
